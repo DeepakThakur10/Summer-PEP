@@ -8,5 +8,5 @@ function outer() {
 }
 
 const counter = outer();
-counter();
-counter();
+counter(); //1
+counter(); //2
