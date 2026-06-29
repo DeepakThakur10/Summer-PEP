@@ -37,9 +37,22 @@ form.addEventListener("submit", function (e) {
     const li = document.createElement("li");
     const deletebtn = document.createElement("button");
 
-    deletebtn.innerText = "Delete";
     deletebtn.style.backgroundColor = "red";
+    deletebtn.innerText="Delete";
+    deletebtn.style.color = "white"; // text color
+    deletebtn.style.border = "grey";
+    deletebtn.style.borderRadius = '8px';
+    deletebtn.style.padding = '6px 12px';
+    deletebtn.style.marginRight = '20px';
+    deletebtn.style.cursor = 'pointer';
+    deletebtn.style.transition = 'background-color 0.3s ease';
 
+    deletebtn.addEventListener('mouseenter', function () {
+        deletebtn.style.backgroundColor = "darkred";
+    });
+    deletebtn.addEventListener('mouseleave', function () {
+        deletebtn.style.backgroundColor = "red";
+    });
     li.innerHTML = `
         <h3>${todoCount}. ${titleV}</h3>
         <p>${descV}</p>
