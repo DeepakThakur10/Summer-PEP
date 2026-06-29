@@ -20,6 +20,7 @@ function outer() {
 }
 
 
+
 const counter = outer();
 form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -58,6 +59,30 @@ form.addEventListener("submit", function (e) {
         <p>${descV}</p>
     `;
 
+    const editbtn = document.createElement('button');
+    editbtn.style.backgroundColor='green';
+    editbtn.style.padding = '6px 12px';
+    editbtn.style.border = 'grey';
+    editbtn.style.borderRadius='6px';
+    editbtn.style.color = 'white';
+    editbtn.innerText="Edit";
+    editbtn.style.marginRight="20px";
+    editbtn.style.cursor='pointer';
+
+    li.appendChild(editbtn);
+    const h3 = li.querySelector("h3");
+    const p = li.querySelector("p");
+
+    editbtn.addEventListener("click", function () {
+        const newTitle = prompt("Enter new title", h3.textContent.split(". ")[1]);
+        const newDesc = prompt("Enter new description", p.textContent);
+
+        if (newTitle && newDesc) {
+            h3.textContent = `${todoCount}. ${newTitle}`;
+            p.textContent = newDesc;
+        }
+    });
+
     li.appendChild(deletebtn);
     deletebtn.addEventListener("click",function(){
         li.remove();
@@ -65,6 +90,7 @@ form.addEventListener("submit", function (e) {
 
         
     })
+    
     todos.appendChild(li);      
     
 
