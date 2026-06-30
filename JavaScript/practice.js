@@ -20,4 +20,36 @@ function scope(){
     //console.log(num2);
     console.log(num3);
 }
-scope();
+//scope();
+/*setTimeout(()=>{
+    console.log("hello")
+},1000);*/
+
+/*setInterval(()=>{
+    console.log("Intervel");
+},1000);*/
+
+console.log("1");
+
+console.log("2");
+
+setTimeout(()=>{
+    console.log("3")
+},3000);
+
+setTimeout(()=>{
+    console.log("4")
+},1000);
+
+Promise.resolve().then(() =>{
+    console.log("7");
+})
+
+console.log("5");
+
+setTimeout(()=>{
+    console.log("6")
+},2000);
+
+
+
