@@ -2,7 +2,7 @@ const form = document.querySelector("form");
 const title = document.getElementById("title");
 const desc = document.getElementById("desc");
 const todos = document.getElementById("todos");
-
+console.log("start");
 function outer() {
     let count = 0;
 
@@ -97,3 +97,5 @@ form.addEventListener("submit", function (e) {
     title.value = "";
     desc.value = "";
 });
+
+console.log("end");

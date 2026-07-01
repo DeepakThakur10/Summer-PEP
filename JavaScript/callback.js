@@ -1,5 +1,5 @@
 
-function  one(){
+/*function  one(){
     console.log("one");
 }
 
@@ -18,4 +18,23 @@ function callGreet(callback){
 }
 callGreet(()=>{
     greet("Deepak");
-})
+})*/
+
+function login() {
+    console.log("Logging")
+
+    setTimeout(()=>{
+        console.log("Login successfull")
+    },1000);
+}
+function getUser(){
+    console.log("getting user")
+
+    setTimeout(()=>{
+        console.log("User is found")
+    })
+}
+
+
+login();
+getUser();
