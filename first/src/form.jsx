@@ -1,15 +1,55 @@
 import { useState } from "react";
 
+function Student({ student }) {
+  return (
+    <div
+      style={{
+        border: "1px solid gray",
+        padding: "10px",
+        margin: "10px 0",
+        borderRadius: "5px",
+      }}
+    >
+      <h2>Student Details</h2>
+      <p><b>Name:</b> {student.name}</p>
+      <p><b>Registration ID:</b> {student.reg}</p>
+      <p><b>Email:</b> {student.email}</p>
+      <p><b>Course:</b> {student.course}</p>
+    </div>
+  );
+}
+
 function Form() {
   const [name, setName] = useState("");
-  const [reg, setReg] = useState(0);
+  const [reg, setReg] = useState("");
   const [email, setEmail] = useState("");
   const [course, setCourse] = useState("");
+
+  // Array to store multiple students
+  const [students, setStudents] = useState([]);
+
+  const addStudent = () => {
+    const obj = {
+      name,
+      reg,
+      email,
+      course,
+    };
+
+    // Add new student to array
+    setStudents([...students, obj]);
+
+    // Clear the form
+    setName("");
+    setReg("");
+    setEmail("");
+    setCourse("");
+  };
 
   return (
     <>
       <form>
-        <h2>Form</h2>
+        <h2>Student Form</h2>
 
         <label>Name:</label>
         <br />
@@ -26,7 +66,7 @@ function Form() {
         <br />
         <input
           type="text"
-          placeholder="Enter Reg ID"
+          placeholder="Enter Registration ID"
           value={reg}
           onChange={(e) => setReg(e.target.value)}
         />
@@ -44,7 +84,8 @@ function Form() {
 
         <br /><br />
 
-        <p>Course:</p>
+        <label>Course:</label>
+        <br />
         <select
           value={course}
           onChange={(e) => setCourse(e.target.value)}
@@ -57,14 +98,18 @@ function Form() {
 
         <br /><br />
 
-        <button type="submit">Add Details</button>
+        <button type="button" onClick={addStudent}>
+          Add Details
+        </button>
       </form>
 
-      <h1>Student Details</h1>
-      <p>Name: {name}</p>
-      <p>Registration ID: {reg}</p>
-      <p>Email: {email}</p>
-      <p>Course: {course}</p>
+      <hr />
+
+      <h1>All Students</h1>
+
+      {students.map((student, index) => (
+        <Student key={index} student={student} />
+      ))}
     </>
   );
 }
