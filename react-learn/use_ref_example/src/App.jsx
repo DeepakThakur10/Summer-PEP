@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Child from "./components/child";
 
 function App() {
@@ -7,17 +7,31 @@ function App() {
 
   const imageRef = useRef(null);
 
+  function expensiveCalculation(num) {
+    console.log("Calculating...");
+
+    for (let i = 0; i < 100000000; i++) {}
+
+    return num * 2;
+  }
+
+  const result = useMemo(() => {
+    return expensiveCalculation(4);
+  }, []);
+
   function handleChange(e) {
     const file = e.target.files[0];
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
+
       setImage(imageUrl);
     }
   }
 
   function removeImage() {
     setImage(null);
+
     imageRef.current.value = "";
   }
 
@@ -29,6 +43,8 @@ function App() {
           marginTop: "50px"
         }}
       >
+        <h2>Result: {result}</h2>
+
         <h2>Upload Image</h2>
 
         <input
@@ -64,18 +80,19 @@ function App() {
             </button>
           </div>
         )}
-        <Child name="john" />
 
-        <h2>{count}</h2>
+        <Child name="John" />
 
-        <button onClick={() => setCount(count + 1)}>Increase</button>
+        <h2>Count: {count}</h2>
+
+        <button
+          onClick={() => setCount(count + 1)}
+        >
+          Increase
+        </button>
       </div>
-
-      
     </>
   );
 }
 
 export default App;
-
-
