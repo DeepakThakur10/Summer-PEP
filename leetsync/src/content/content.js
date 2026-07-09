@@ -1,11 +1,52 @@
 console.log("LeetSync content script is running 🚀");
 
-let alreadyDetected = false;
+let submittedCode = "";
+let submittedLanguage = "";
+let acceptedDetected = false;
+let solutionProcessed = false;
+
+window.addEventListener(
+  "LEETSYNC_SUBMISSION_DATA",
+  (event) => {
+    submittedCode = event.detail.code || "";
+    submittedLanguage =
+      event.detail.language || "";
+
+    console.log(
+      "LeetSync received submission:",
+      {
+        language: submittedLanguage,
+        code: submittedCode,
+      }
+    );
+
+    createFinalSolution();
+  }
+);
+
+const pageScript =
+  document.createElement("script");
+
+pageScript.src =
+  chrome.runtime.getURL(
+    "src/content/pageScript.js"
+  );
+
+pageScript.onload = () => {
+  pageScript.remove();
+
+  console.log(
+    "LeetSync page script injected ✅"
+  );
+};
+
+document.documentElement.appendChild(
+  pageScript
+);
 
 function extractProblemDetails() {
   const problemSlug =
-    window.location.pathname
-      .split("/")[2];
+    window.location.pathname.split("/")[2];
 
   const problemTitle = problemSlug
     .split("-")
@@ -19,70 +60,125 @@ function extractProblemDetails() {
   const pageText =
     document.body.innerText;
 
+  const escapedTitle =
+    problemTitle.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
   const numberMatch =
     pageText.match(
       new RegExp(
-        `(\\d+)\\.\\s*${problemTitle}`,
+        `(\\d+)\\.\\s*${escapedTitle}`,
         "i"
       )
     );
 
-  const problemNumber =
-    numberMatch?.[1] || "";
+  return {
+    problemNumber:
+      numberMatch?.[1] || "",
 
-  const solution = {
-    problemNumber,
     problemTitle,
+
     problemSlug,
+
     url: window.location.href,
   };
-
-  console.log(
-    "LeetSync extracted problem:",
-    solution
-  );
 }
 
-function checkForAcceptedResult() {
-  if (alreadyDetected) {
+function createFinalSolution() {
+  if (
+    solutionProcessed ||
+    !acceptedDetected ||
+    !submittedCode ||
+    !submittedLanguage
+  ) {
     return;
   }
 
-  const elements = document.querySelectorAll(
-    "span, div, h1, h2, h3"
-  );
+  solutionProcessed = true;
 
-  for (const element of elements) {
-    const text = element.textContent?.trim();
+  const problem =
+    extractProblemDetails();
+
+  const solution = {
+    ...problem,
+
+    language:
+      submittedLanguage,
+
+    code:
+      submittedCode,
+  };
+
+  console.log(
+    "LeetSync final solution:",
+    solution
+  );
+  
+  chrome.runtime.sendMessage(
+  {
+    type: "UPLOAD_SOLUTION",
+    solution,
+  },
+  (response) => {
+    console.log(
+      "LeetSync background response:",
+      response
+    );
+  }
+);
+}
+
+function checkForAcceptedResult() {
+  if (
+    acceptedDetected ||
+    solutionProcessed
+  ) {
+    return;
+  }
+
+  const elements =
+    document.querySelectorAll(
+      "span, div, h1, h2, h3"
+    );
+
+  for (
+    const element of elements
+  ) {
+    const text =
+      element.textContent?.trim();
 
     if (
       text === "Accepted" &&
       element.offsetParent !== null
     ) {
-      alreadyDetected = true;
+      acceptedDetected = true;
 
       console.log(
         "LeetSync: New accepted submission detected ✅"
       );
 
-      setTimeout(() => {
-        extractProblemDetails();
-      }, 1000);
+      createFinalSolution();
 
       return;
     }
   }
 }
 
-const observer = new MutationObserver(() => {
-  checkForAcceptedResult();
-});
+const observer =
+  new MutationObserver(() => {
+    checkForAcceptedResult();
+  });
 
-observer.observe(document.body, {
-  childList: true,
-  subtree: true,
-  characterData: true,
-});
+observer.observe(
+  document.body,
+  {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  }
+);
 
 console.log(
   "LeetSync is waiting for a new submission..."

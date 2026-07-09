@@ -26,6 +26,16 @@ const manifest = {
       js: ["src/content/content.js"],
     },
   ],
+  web_accessible_resources: [
+  {
+    resources: [
+      "src/content/pageScript.js"
+    ],
+    matches: [
+      "https://leetcode.com/*"
+    ],
+  },
+  ],
 
   action: {
     default_popup: "index.html",
