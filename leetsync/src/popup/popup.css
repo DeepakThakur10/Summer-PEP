@@ -67,3 +67,11 @@ button:hover {
   color: green;
   font-size: 14px;
 }
+.test-button {
+  margin-top: 10px;
+  background: #238636;
+}
+
+.test-button:hover {
+  background: #2ea043;
+}
