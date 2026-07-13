@@ -7,8 +7,8 @@ function Parent() {
 
   return (
     <div>
-      <h2>Parent</h2>
-      <p>{user}</p>
+      <h2>This is Parent</h2>
+      <p>User inside parent: {user}</p>
       <Child />
     </div>
   );
