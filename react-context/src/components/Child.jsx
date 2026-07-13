@@ -1,7 +1,7 @@
 import GrandChild from "./GrandChild";
 
-function Child({ message }) {
-  return <GrandChild message={message} />;
+function Child() {
+  return <GrandChild />;
 }
 
 export default Child;

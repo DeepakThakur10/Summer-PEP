@@ -1,9 +1,7 @@
-import Parent from './Parent';
+import Parent from "./Parent";
 
 function GrandParent() {
-  const message = "Hello from GrandParent";
-
-  return <Parent message={message} />;
+  return <Parent />;
 }
 
 export default GrandParent;
