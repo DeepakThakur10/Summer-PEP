@@ -62,8 +62,9 @@ async function uploadSolution(solution) {
     );
   }
 
-  const folderName =
-    `${solution.problemNumber}-${solution.problemSlug}`;
+  const folderName = solution.problemNumber
+  ? `${solution.problemNumber}-${solution.problemSlug}`
+  : solution.problemSlug;
 
   const filePath =
     `solution_of_leetcode/${folderName}/Solution.${extension}`;
@@ -86,6 +87,19 @@ async function uploadSolution(solution) {
           "application/vnd.github+json",
       },
     });
+
+    if (
+  !existingFileResponse.ok &&
+  existingFileResponse.status !== 404
+) {
+  const errorData =
+    await existingFileResponse.json();
+
+  throw new Error(
+    errorData.message ||
+    "Could not check existing GitHub file"
+  );
+}
 
   if (existingFileResponse.ok) {
     const existingFile =
