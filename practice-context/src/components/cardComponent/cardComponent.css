@@ -1,0 +1,15 @@
+.card {
+  border: 1px solid #9dc990;
+  border-radius: 8px;
+  padding: 12px;
+  
+}
+
+.card img {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.card p {
+  margin: 8px 0;
+}

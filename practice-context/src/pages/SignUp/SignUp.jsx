@@ -1,8 +1,31 @@
+import { useState } from "react";
+
 function Signup() {
+    const[name,setName] = useState("");
+    const[email,setEmail] = useState("");
+
     return (
+        <>
         <div>
-            <p>This is Signup Page</p>
+            <input type="text" placeholder="Enter Your Name" value={name} onChange={(e)=>setName(e.target.value)} />
+
+            <br/>
+            <br/>
+
+            <input type="email" placeholder="Enter Your Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+
+            <br/>
+            <br/>
+
+            <input type="password" placeholder="Enter Your Password"/>
+
+            <br/>
+            <br/>
+            
+            
+
         </div>
+        </>
     );
 }
 

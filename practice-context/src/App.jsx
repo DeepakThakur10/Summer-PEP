@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
-
+import Footer from "./components/footer/footer";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -18,6 +18,10 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/about" element={<About />} />
       </Routes>
+
+      {/* <Footer /> */}
+
+    
     </>
   );
 }
