@@ -1,5 +1,5 @@
 const express = require('express');
-
+const loggers = require("./middleware/loggers");
 const students = [
     { id: 1, name: "Tom", age: 22, city: "Delhi" },
     { id: 2, name: "Harry", age: 25, city: "Kolkata" },
@@ -10,6 +10,7 @@ const students = [
 ];
 
 const app = express();
+app.use(loggers);
 
 app.use(express.json());
 
