@@ -56,14 +56,58 @@ app.get('/search',(req,res)=>{
 
     res.send(student);
 })
-app.post('/studentp', (req, res) => {
-    const data = req.body;
-    students.push(data);
-    console.log(data);
+app.post('/student', (req, res) => {
+    const body = req.body;
+    const newStudent = { id: students.length + 1, ...body }
+    students.push(newStudent);
     res.send({
         message: "Student added successfully",
+        data: newStudent,
     });
 });
+
+app.put('/student/:id',(req,res)=>{
+    const id = req.params.id;
+    const student = students.find(s => s.id == id);
+    if(!student){
+        res.send('No Student is there with this id')
+    }
+    const body = req.body;
+   
+    student.name = body.name;
+    student.age = body.age;
+    student.city = body.city;
+
+    res.send({
+        message: "Student Updated",
+        newData: students,
+    })
+})
+
+app.patch('/students/:id',(req,res)=> {
+    const id = req.params.id;
+    const student = students.find(s => s.id == id);
+    if(!student){
+        res.send("No one is there");
+    }
+    const data = req.body;
+    Object.assign(student, data);
+    /*if(data.name){
+        student.name = data.name;
+    }
+    else if(data.age){
+        student.age= data.age;
+
+    }
+    else if(data.city){
+        student.city = data.city;
+    }*/
+
+    res.send({
+        message: "Data Updated",
+        newData: students,
+    })
+})
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
