@@ -1,18 +1,18 @@
 [
   {
     "id": 1,
-    "firstName": "Tom",
-    "lastName": "jerry",
-    "email": "tom@gmail.com",
-    "password": "1234",
+    "firstName": "john",
+    "lastName": "smith",
+    "email": "john@gmail.com",
+    "password": "$2b$10$thtCa9dIhgy25y3agUQUiuTzCcWxIxPOlw16t3oT5qLjhNUi7eL8i",
     "role": "student"
   },
   {
     "id": 2,
-    "firstName": "john",
-    "lastName": "smith",
-    "email": "john@gmail.com",
-    "password": "1234",
+    "firstName": "Deepak",
+    "lastName": "Kumar",
+    "email": "deepak@gmail.com",
+    "password": "$2b$10$ACt73etyQ2.SJlxQO07Fquyi5JZyx8ukd6pekO5COmsPptD1yFU6K",
     "role": "student"
   }
 ]

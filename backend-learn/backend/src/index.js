@@ -1,6 +1,7 @@
 import express from "express";
 import fs from "fs/promises";
 import "dotenv/config";
+import bcrypt from 'bcrypt';
 
 const app = express();
 
@@ -40,12 +41,14 @@ app.post("/signup", async (req, res) => {
         });
     }
 
+    const hashedPassword = await bcrypt.hash(password,10);
+
     const newUser = {
         "id": userList.length+1,
         firstName,
         lastName,
         email,
-        password,
+        password: hashedPassword,
         role: "student"
     };
 
@@ -55,11 +58,12 @@ app.post("/signup", async (req, res) => {
         "data/user.json",
         JSON.stringify(userList,null,2)
     );
+    const { password: _dirname, ...userData } = newUser;
 
      res.status(201).json({
         success: true,
         message: "User registered successfully",
-        user: newUser
+        user: userData
     });
     return;
    }
