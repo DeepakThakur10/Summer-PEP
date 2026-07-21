@@ -5,7 +5,8 @@
     "lastName": "smith",
     "email": "john@gmail.com",
     "password": "$2b$10$thtCa9dIhgy25y3agUQUiuTzCcWxIxPOlw16t3oT5qLjhNUi7eL8i",
-    "role": "student"
+    "role": "student",
+    "courses": []
   },
   {
     "id": 2,
