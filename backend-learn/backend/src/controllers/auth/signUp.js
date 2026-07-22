@@ -1,5 +1,6 @@
-import fs from "fs/promises";
+// import fs from "fs/promises";
 import bcrypt from "bcrypt";
+import User from "../../models/User.js";
 
 export const signup = async (req, res) => {
     try {
@@ -11,13 +12,15 @@ export const signup = async (req, res) => {
             });
         }
 
-        const users = JSON.parse(
-            await fs.readFile("data/user.json", "utf-8")
-        );
+        // const users = JSON.parse(
+        //     await fs.readFile("data/user.json", "utf-8")
+        // );
 
-        const existingUser = users.find(
-            user => user.email === email
-        );
+        // const existingUser = users.find(
+        //     user => user.email === email
+        // );
+
+        const existingUser = await User.findOne( {email} );
 
         if (existingUser) {
             return res.status(409).json({
@@ -27,24 +30,26 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = {
-            id: users.length + 1,
+        // const newUser = {
+        //     id: users.length + 1,
+            
+        // }
+        await User.create({
             firstName,
             lastName,
             email,
             password: hashedPassword,
-            role: "student",
-            courses: []
-        };
+            // role: "tudent"
+        })
 
-        users.push(newUser);
+        // users.push(newUser);
 
-        await fs.writeFile(
-            "data/user.json",
-            JSON.stringify(users, null, 2)
-        );
+        // await fs.writeFile(
+        //     "data/user.json",
+        //     JSON.stringify(users, null, 2)
+        // );
 
-        const { password: _, ...userData } = newUser;
+        const { password: _, ...userData } = newUser.toObject();
 
         return res.status(201).json({
             success: true,
@@ -52,6 +57,7 @@ export const signup = async (req, res) => {
         });
 
     } catch (err) {
+        console.log('Error: ', err)
         return res.status(500).json({
             message: "Internal Server Error"
         });

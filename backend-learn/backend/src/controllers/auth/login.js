@@ -1,6 +1,7 @@
-import fs from "fs/promises";
+// import fs from "fs/promises";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import User from "../../models/User.js";
 
 export const login = async (req, res) => {
     try {
@@ -12,13 +13,11 @@ export const login = async (req, res) => {
             });
         }
 
-        const users = JSON.parse(
-            await fs.readFile("data/user.json", "utf-8")
-        );
+        // const users = JSON.parse(
+        //     await fs.readFile("data/user.json", "utf-8")
+        // );
 
-        const user = users.find(
-            user => user.email === email
-        );
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(404).json({
@@ -39,7 +38,7 @@ export const login = async (req, res) => {
 
         const token = jwt.sign(
             {
-                id: user.id,
+                id: user._id,
                 email: user.email,
                 role: user.role
             },
@@ -55,6 +54,7 @@ export const login = async (req, res) => {
         });
 
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             message: "Internal Server Error"
         });
