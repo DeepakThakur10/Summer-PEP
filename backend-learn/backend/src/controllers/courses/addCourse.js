@@ -1,4 +1,4 @@
-import Course from "../../models/Course";
+import Course from "../../models/Course.js";
 
 export const addCourses = async (req, res) => {
     const{
@@ -16,6 +16,21 @@ export const addCourses = async (req, res) => {
             message: "All Information Required"
         })
     }
+
+    const course = await Course.create({
+        title,
+        instructor,
+        price,
+        duration,
+        level,
+        imageUrl,
+    });
+
+    return res.status(201).json({
+        success: true,
+        message: "Course added successfully",
+        course,
+    })
 
 
 }

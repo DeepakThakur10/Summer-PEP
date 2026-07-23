@@ -1,31 +1,24 @@
-import fs from "fs/promises";
+// import fs from "fs/promises";
+
+import Course from "../../models/Course.js";
 
 export const getCourses = async (req, res) => {
     try {
-
-        const courses = JSON.parse(
-            await fs.readFile("data/course.json", "utf-8")
-        );
-
-        if (!courses.length) {
-            return res.status(404).json({
-                success: false,
-                message: "No courses found"
-            });
-        }
+        const courses = await Course.find();
 
         return res.status(200).json({
             success: true,
-            message: "Courses fetched successfully",
-            courses
+            message: courses.length
+                ? "Courses fetched successfully"
+                : "No courses found",
+            courses,
         });
-
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error("Error fetching courses:", error);
 
         return res.status(500).json({
             success: false,
-            message: "Internal Server Error"
+            message: "Internal Server Error",
         });
     }
 };

@@ -1,4 +1,4 @@
-import { Schema, Model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const CourseSchema = new Schema({
     title:{
@@ -8,10 +8,9 @@ const CourseSchema = new Schema({
         minlength: 3,
 
     },
-    instructor:{
-        type: String,
+    instructorId:{
+        type: mongoose.Types.ObjectId,
         required: true,
-        trim:true
     },
     price:{
         type: Number,
