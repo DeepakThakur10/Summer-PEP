@@ -1,38 +1,31 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const CourseSchema = new Schema({
-    title:{
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 3,
-
-    },
-    instructorId:{
-        type: mongoose.Types.ObjectId,
-        required: true,
-    },
-    price:{
-        type: Number,
-        required: true,
-        min: 0
-    },
-    duration:{
+const courseSchema = new mongoose.Schema({
+    title: {
         type: String,
         required: true
     },
-    level:{
-        type: String,
-        required: true,
-        enum:['Beginner','Intermediate','Advanced']
+    instructorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     },
-    imageUrl:{
+    price: {
+        type: Number,
+        required: true
+    },
+    duration: {
+        type: String,
+        required: true
+    },
+    level: {
+        type: String,
+        enum: ["Beginner", "Intermediate", "Advance"],
+        required: true
+    },
+    imageUrl: {
         type: String,
         required: true
     }
-
-
 })
 
-const Course = model("Course",CourseSchema);
-export default Course;
+export default mongoose.model("Course", courseSchema);

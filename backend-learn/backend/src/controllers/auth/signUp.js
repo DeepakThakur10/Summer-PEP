@@ -1,65 +1,51 @@
-// import fs from "fs/promises";
-import bcrypt from "bcrypt";
-import User from "../../models/User.js";
+// import fs from 'fs/promises';
+import bcrypt from 'bcrypt';
+import User from '../../models/User.js';
 
 export const signup = async (req, res) => {
+    // const body = req.body;
     try {
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password }= req.body;
 
         if (!firstName || !lastName || !email || !password) {
-            return res.status(400).json({
-                message: "All information is required"
-            });
+            res.json({ message: 'All informations are required for signup!'});
+            return;
         }
 
-        // const users = JSON.parse(
-        //     await fs.readFile("data/user.json", "utf-8")
-        // );
+        // const userList = JSON.parse(await fs.readFile('data/user.json', 'utf-8'));
+        // console.log('UserData, ', userList);
 
-        // const existingUser = users.find(
-        //     user => user.email === email
-        // );
-
-        const existingUser = await User.findOne( {email} );
+        // const existingUser = userList.find(u => u.email === email);
+        const existingUser = await User.findOne({ email });
 
         if (existingUser) {
-            return res.status(409).json({
-                message: "User already exists"
-            });
+            res.json({ message: 'User with this email already exist.'});
+            return;
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10); 
 
-        // const newUser = {
-        //     id: users.length + 1,
-            
-        // }
         await User.create({
             firstName,
             lastName,
             email,
             password: hashedPassword,
-            // role: "tudent"
+            role: "student"
         })
 
-        // users.push(newUser);
 
-        // await fs.writeFile(
-        //     "data/user.json",
-        //     JSON.stringify(users, null, 2)
-        // );
+    //    const { password: _, ...userData } = newUser;
 
-        const { password: _, ...userData } = newUser.toObject();
+        // userList.push(newUser);
+        // await fs.writeFile('data/user.json', JSON.stringify(userList, null, 2));
 
-        return res.status(201).json({
-            success: true,
-            user: userData
+        res.json({
+            message: "New user created successfully",
+            // data: userData
         });
+        return;
 
-    } catch (err) {
-        console.log('Error: ', err)
-        return res.status(500).json({
-            message: "Internal Server Error"
-        });
+        } catch (err) {
+            console.log(err);
     }
-};
+}
